@@ -236,7 +236,7 @@ class PositionController(object):
         if r == 0:
             self.desired_x = 0
             self.desired_y = 0
-            self.desired_z = 3
+            self.desired_z = 2
             self.desired_yaw = 0
 
         return

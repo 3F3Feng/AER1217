@@ -159,7 +159,7 @@ if __name__ == '__main__':
                 msg = TransformStamped()
                 msg.transform.translation.x = 0
                 msg.transform.translation.y = 0
-                msg.transform.translation.z = 2
+                msg.transform.translation.z = 1.5
                 msg.transform.rotation.z = 0
                 DesPosGen.pub_des_pos.publish(msg)
         except KeyboardInterrupt:
