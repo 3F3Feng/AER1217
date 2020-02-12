@@ -169,6 +169,7 @@ class PositionController(object):
 
         self.zeta_yaw = 0.9
         self.omega_yaw = .2 / 1.8
+        self.kp_yaw = 20
 
         # current state
         # self._x_error = 0.0
@@ -272,6 +273,7 @@ class PositionController(object):
             yaw_err = yaw_err + 2 * np.pi
 
         desired_yaw_dot = (yaw_err) / dt
+        cmd_yaw_rate = desired_yaw_dot/self.kp_yaw
 
         # actual x velocity
         x_dot = (self.x - self.x_old) / dt
@@ -360,7 +362,7 @@ class PositionController(object):
         elif cmd_pitch_body < -1:
             cmd_pitch_body = -1
 
-        return -cmd_roll_body, -cmd_pitch_body, err_z, desired_yaw_dot, dt
+        return -cmd_roll_body, -cmd_pitch_body, err_z, cmd_yaw_rate, dt
 
     def send_cmd(self, roll, pitch, z_dot, yaw_dot):
         msg = Twist()
