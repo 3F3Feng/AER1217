@@ -13,6 +13,7 @@ import rospy
 from drone_controller import BasicDroneController
 from drone_video_display import DroneVideoDisplay
 from ardrone_autonomy.srv import *
+from std_msgs.msg import Int16
 import numpy as np
 
 # Finally the GUI libraries
@@ -37,20 +38,28 @@ class KeyMapping(object):
 	###
 	Emergency        = QtCore.Qt.Key.Key_Space
 	ThrottleCut      = QtCore.Qt.Key.Key_K # kill switch
+	Lineartrajectory = QtCore.Qt.Key.Key_N
+	Circletrajectory = QtCore.Qt.Key.Key_M
+
+	ToggleController = QtCore.Qt.Key.Key_C
 
 
 # Our controller definition, note that we extend the DroneVideoDisplay class
 class KeyboardController(DroneVideoDisplay):
 	def __init__(self):
 		super(KeyboardController,self).__init__()
-		
+		# Pubilsher
+		self.pub_traj = rospy.Publisher('/desired_traj', Int16, queue_size=1)
+		self.pub_controller = rospy.Publisher('/controller', Int16, queue_size=1)
+
 		self.pitch = 0
 		self.roll = 0
 		self.yaw_velocity = 0 
 		self.z_velocity = 0
 		self.camchannel = 0
 		self.processImagesBool = False # disable image processing at start-up
-
+		self._controller = Int16()
+		self._controller.data = 0
 # We add a keyboard handler to the DroneVideoDisplay to react to keypresses
 	def keyPressEvent(self, event):
 		key = event.key()
@@ -87,6 +96,16 @@ class KeyboardController(DroneVideoDisplay):
 					self.processImagesBool = False
 					print "Image processing is turned off"
 					super(KeyboardController,self).DisableImageProcessing()
+			elif key == KeyMapping.Lineartrajectory:
+				self.set_traj(1)
+			elif key == KeyMapping.Circletrajectory:
+				self.set_traj(2)
+			elif key == KeyMapping.ToggleController:
+				if self._controller.data == 0:
+					self.set_p_controller(1)
+				elif self._controller.data == 1:
+					self.set_p_controller(0)
+					self.set_traj(0)
 			else:
 				# Now we handle moving, notice that this section is the opposite (+=) of the keyrelease section
 				if key == KeyMapping.YawLeft:
@@ -142,7 +161,12 @@ class KeyboardController(DroneVideoDisplay):
 
 			# finally we set the command to be sent. The controller handles sending this at regular intervals
 			controller.SetCommand(self.roll, self.pitch, self.yaw_velocity, self.z_velocity)
+	def set_traj(self, i):
+		self.pub_traj.publish(i)
 
+	def set_p_controller(self, i):
+		self._controller.data = i
+		self.pub_controller.publish(self._controller.data)
 
 
 # Setup the application

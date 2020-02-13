@@ -42,7 +42,7 @@ class BasicDroneController(object):
 
 		# Setup regular publishing of control packets
 		self.command = Twist()
-		#self.commandTimer = rospy.Timer(rospy.Duration(COMMAND_PERIOD/1000.0),self.SendCommand)
+		self.commandTimer = rospy.Timer(rospy.Duration(COMMAND_PERIOD/1000.0),self.SendCommand)
 
 		# Land the drone if we are shutting down
 		rospy.on_shutdown(self.SendLand)
