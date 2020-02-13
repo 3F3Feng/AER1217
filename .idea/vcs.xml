@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/extras/devel/src/ardronelib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/extras/src/ardrone_autonomy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/extras/src/ardrone_tutorials" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/extras/src/vicon_bridge" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gazebo" vcs="Git" />
+  </component>
+</project>

@@ -1,0 +1,2 @@
+set(vicon_bridge_MESSAGE_FILES "/home/schaeferz/aer1217/extras/src/vicon_bridge/msg/Marker.msg;/home/schaeferz/aer1217/extras/src/vicon_bridge/msg/Markers.msg;/home/schaeferz/aer1217/extras/src/vicon_bridge/msg/TfDistortInfo.msg")
+set(vicon_bridge_SERVICE_FILES "/home/schaeferz/aer1217/extras/src/vicon_bridge/srv/viconCalibrateSegment.srv;/home/schaeferz/aer1217/extras/src/vicon_bridge/srv/viconGrabPose.srv")
