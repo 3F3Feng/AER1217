@@ -43,7 +43,8 @@ print(i/j)
 print(c_t[-1] - c_t[0], 1/(c_t[1] - c_t[0]))
 print(t[-1] - t[0], 1/(t[1] - t[0]))
 print((c_t[-1] - c_t[0]) - (t[-1] - t[0]))
-plt.plot
+
 plt.plot(c_x, c_y)
 plt.plot(x, y)
+plt.axis('equal')
 plt.show()

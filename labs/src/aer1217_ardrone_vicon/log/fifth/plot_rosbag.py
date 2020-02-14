@@ -44,7 +44,7 @@ print(c_t[-1] - c_t[0], 1/(c_t[1] - c_t[0]))
 print(t[-1] - t[0], 1/(t[1] - t[0]))
 print((c_t[-1] - c_t[0]) - (t[-1] - t[0]))
 
-separator = 1 / 1.999
+separator = 1 / 1
 plt.plot(c_x[:int(i * separator) + 1], c_y[:int(i * separator) + 1])
 plt.plot(x[:int(j * separator) + 1], y[:int(j * separator) + 1])
 plt.axis('equal')
