@@ -241,7 +241,6 @@ class PositionController(object):
                 self._dp_msg.transform.rotation.w]
         euler = euler_from_quaternion(quat)
         self.desired_yaw = euler[2]
-        # print("x,y,z_des: ",self.desired_x, self.desired_y, self.desired_z)
 
         # if r=0, ignore desired position data and just hover
         if r == 0:
