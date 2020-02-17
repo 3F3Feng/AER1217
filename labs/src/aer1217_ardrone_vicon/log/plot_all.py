@@ -31,7 +31,7 @@ c_ry = []
 c_z_dot = []
 c_yaw = []
 
-n = 4
+n = 5
 log = ['first', 'second', 'third', 'fourth', 'fifth']
 
 # extract data from /desired_position.csv
@@ -112,6 +112,23 @@ if n > 3:  # the first three log doesn't include /cmd_vel_RHC
             k = k + 1
         print('Number of cmd msg received:', k)
 
+plt.figure()
+plt.plot(d_x, d_y)
+plt.plot(x, y)
+plt.axis('equal')
+plt.show()
+
+if n > 3:
+    figure, ax = plt.subplots(3, 1, True)
+    ax[0].plot(c_t, c_rx)
+    ax[0].plot(t, rx)
+    ax[1].plot(c_t, c_ry)
+    ax[1].plot(t, ry)
+    ax[2].plot(d_t, d_rz)
+    ax[2].plot(t, rz)
+    plt.show()
+
+# Plot three axel separately
 plt.figure(1)
 plt.plot(d_t, d_x)
 plt.plot(t, x)
@@ -129,13 +146,3 @@ plt.plot(d_t, d_z)
 plt.plot(t, z)
 # plt.axis('equal')
 plt.show()
-
-if n > 3:
-    figure, ax = plt.subplots(3, 1, True)
-    ax[0].plot(c_t, c_rx)
-    ax[0].plot(t, rx)
-    ax[1].plot(c_t, c_ry)
-    ax[1].plot(t, ry)
-    ax[2].plot(d_t, d_rz)
-    ax[2].plot(t, rz)
-    plt.show()
