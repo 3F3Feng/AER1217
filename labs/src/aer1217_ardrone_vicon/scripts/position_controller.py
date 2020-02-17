@@ -27,7 +27,7 @@ def main():
 
     try:
         while True:
-            if p_control.controller_msg.data == 1:
+            if p_control.controller_msg.data == 1:  # Check if position controller is turned on by keyboard
                 i = 0
                 while True:
                     p_control.update_state()
@@ -37,6 +37,7 @@ def main():
 
                     if i % 10 == 0:
                         # os.system('clear')
+                        # Update necessary data on screen
                         print('Position:', '\n', p_control.x, '\n', p_control.y, '\n', p_control.z, '\n',
                               'Target_Position:', '\n', p_control.desired_x, '\n', p_control.desired_y, '\n', p_control.desired_z, '\n',
                               'Command:', '\n', roll, '\n', pitch, '\n', z_dot, '\n', yaw_dot,'\n',

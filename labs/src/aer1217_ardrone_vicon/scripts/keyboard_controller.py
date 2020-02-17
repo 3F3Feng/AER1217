@@ -30,34 +30,36 @@ class KeyMapping(object):
 	YawRight         = QtCore.Qt.Key.Key_R
 	IncreaseAltitude = QtCore.Qt.Key.Key_Q
 	DecreaseAltitude = QtCore.Qt.Key.Key_A
-	Takeoff          = QtCore.Qt.Key.Key_Y
-	Land             = QtCore.Qt.Key.Key_H
+	Takeoff = QtCore.Qt.Key.Key_Y
+	Land = QtCore.Qt.Key.Key_H
 	# 2017-03-22 switch to bottom camera through rosservice, specify camera channel as 1
-	CamChange        = QtCore.Qt.Key.Key_X
-	ProcessImg       = QtCore.Qt.Key.Key_P
+	CamChange = QtCore.Qt.Key.Key_X
+	ProcessImg = QtCore.Qt.Key.Key_P
 	###
-	Emergency        = QtCore.Qt.Key.Key_Space
-	ThrottleCut      = QtCore.Qt.Key.Key_K # kill switch
+	Emergency = QtCore.Qt.Key.Key_Space
+	ThrottleCut = QtCore.Qt.Key.Key_K  # kill switch
+
+	# Key added in lab2
 	Lineartrajectory = QtCore.Qt.Key.Key_N
 	Circletrajectory = QtCore.Qt.Key.Key_M
-
+	# Turn position controller on/off
 	ToggleController = QtCore.Qt.Key.Key_C
 
 
 # Our controller definition, note that we extend the DroneVideoDisplay class
 class KeyboardController(DroneVideoDisplay):
 	def __init__(self):
-		super(KeyboardController,self).__init__()
-		# Pubilsher
+		super(KeyboardController, self).__init__()
+		# Publisher to communicate with other nodes
 		self.pub_traj = rospy.Publisher('/desired_traj', Int16, queue_size=1)
 		self.pub_controller = rospy.Publisher('/controller', Int16, queue_size=1)
 
 		self.pitch = 0
 		self.roll = 0
-		self.yaw_velocity = 0 
+		self.yaw_velocity = 0
 		self.z_velocity = 0
 		self.camchannel = 0
-		self.processImagesBool = False # disable image processing at start-up
+		self.processImagesBool = False  # disable image processing at start-up
 		self._controller = Int16()
 		self._controller.data = 0
 # We add a keyboard handler to the DroneVideoDisplay to react to keypresses
@@ -161,6 +163,7 @@ class KeyboardController(DroneVideoDisplay):
 
 			# finally we set the command to be sent. The controller handles sending this at regular intervals
 			controller.SetCommand(self.roll, self.pitch, self.yaw_velocity, self.z_velocity)
+
 	def set_traj(self, i):
 		self.pub_traj.publish(i)
 
