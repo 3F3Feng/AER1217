@@ -31,20 +31,29 @@ c_ry = []
 c_z_dot = []
 c_yaw = []
 
-n = 5
+n = 3
 log = ['first', 'second', 'third', 'fourth', 'fifth']
 
 # extract data from /desired_position.csv
 with open(log[n - 1] + '/_slash_desired_position.csv') as logfile:
     data_c = csv.reader(logfile, delimiter=',')
     i = 0
+    f = False
     for row in data_c:
         if 1 < i:
             d_x.append(float(row[10]))
             d_y.append(float(row[11]))
             d_z.append(float(row[12]))
             d_t.append(float(row[0]) / 1000000000)
-
+            if i > 2:
+                if d_x[-1] - d_x[-2] > 0.05:
+                    desired_start = i
+                    print desired_start
+                    f = True
+            if f and d_t[-1] > d_t[desired_start - 2] + 15:
+                desired_end = i
+                print desired_end
+                f = False
             # For misused euler desired rotation log
             d_rx.append(float(row[14]))
             d_ry.append(float(row[15]))
@@ -69,12 +78,20 @@ for dt in d_t:
 with open(log[n - 1] + '/_slash_vicon_slash_ARDroneCarre_slash_ARDroneCarre.csv') as logfile:
     data = csv.reader(logfile, delimiter=',')
     j = 0
+    f = True
+    f_ = True
     for row in data:
         if 1 < j:
             x.append(float(row[10]))
             y.append(float(row[11]))
             z.append(float(row[12]))
             t.append(float(row[0]) / 1000000000)
+            if t[-1] - 5 > d_t[desired_start] and f:
+                f = False
+                vicon_start = j
+            if t[-1] - 15 > d_t[desired_start] + 30 and f_:
+                f_ = False
+                vicon_end = j
 
             # Desired position does not include rotation around x and y axel
             # rx.append(float(row[14]))
@@ -113,36 +130,39 @@ if n > 3:  # the first three log doesn't include /cmd_vel_RHC
         print('Number of cmd msg received:', k)
 
 plt.figure()
-plt.plot(d_x, d_y)
-plt.plot(x, y)
-plt.axis('equal')
+plt.plot(d_x[desired_start:desired_end], d_y[desired_start:desired_end])
+plt.plot(x[vicon_start:vicon_end], y[vicon_start:vicon_end])
+plt.gca().set_aspect('equal', adjustable='box')
+plt.xlim([-1.25, 1.25])
+plt.ylim([-0.25, 2.25])
+
 plt.show()
 
-if n > 3:
-    figure, ax = plt.subplots(3, 1, True)
-    ax[0].plot(c_t, c_rx)
-    ax[0].plot(t, rx)
-    ax[1].plot(c_t, c_ry)
-    ax[1].plot(t, ry)
-    ax[2].plot(d_t, d_rz)
-    ax[2].plot(t, rz)
-    plt.show()
-
-# Plot three axel separately
-plt.figure(1)
-plt.plot(d_t, d_x)
-plt.plot(t, x)
-# plt.axis('equal')
-plt.show()
-
-plt.figure(2)
-plt.plot(d_t, d_y)
-plt.plot(t, y)
-# plt.axis('equal')
-plt.show()
-
-plt.figure(3)
-plt.plot(d_t, d_z)
-plt.plot(t, z)
-# plt.axis('equal')
-plt.show()
+# if n > 3:
+#     figure, ax = plt.subplots(3, 1, True)
+#     ax[0].plot(c_t, c_rx)
+#     ax[0].plot(t, rx)
+#     ax[1].plot(c_t, c_ry)
+#     ax[1].plot(t, ry)
+#     ax[2].plot(d_t, d_rz)
+#     ax[2].plot(t, rz)
+#     plt.show()
+#
+# # Plot three axel separately
+# plt.figure(1)
+# plt.plot(d_t, d_x)
+# plt.plot(t, x)
+# # plt.axis('equal')
+# plt.show()
+#
+# plt.figure(2)
+# plt.plot(d_t, d_y)
+# plt.plot(t, y)
+# # plt.axis('equal')
+# plt.show()
+#
+# plt.figure(3)
+# plt.plot(d_t, d_z)
+# plt.plot(t, z)
+# # plt.axis('equal')
+# plt.show()
