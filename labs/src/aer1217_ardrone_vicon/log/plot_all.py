@@ -72,11 +72,3 @@ plt.plot(c_t_1, c_z_1)
 plt.plot(t, z)
 # plt.axis('equal')
 plt.show()
-
-# plt.figure()
-# plt.plot(cto[1:])
-# plt.show()
-#
-# plt.figure()
-# plt.plot(to[1:])
-# plt.show()
