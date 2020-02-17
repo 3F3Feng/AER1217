@@ -52,9 +52,7 @@ for tt in t:
     to.append(tt - t0)
     t0 = tt
 print(i / j)
-# print(c_t_1[-1] - c_t_1[0], 1 / (c_t_1[1] - c_t_1[0]))
-# print(t[-1] - t[0], 1 / (t[1] - t[0]))
-# print((c_t_1[-1] - c_t_1[0]) - (t[-1] - t[0]))
+
 plt.figure()
 plt.plot(c_t_1, c_x_1)
 plt.plot(t, x)
