@@ -31,7 +31,7 @@ c_ry = []
 c_z_dot = []
 c_yaw = []
 
-n = 1
+n = 5
 log = ['first', 'second', 'third', 'fourth', 'fifth']
 
 # extract data from /desired_position.csv
@@ -51,13 +51,13 @@ with open(log[n - 1] + '/_slash_desired_position.csv') as logfile:
             d_rx.append(float(row[14]))
             d_ry.append(float(row[15]))
             d_rz.append(float(row[16]))
-            if i > 2:
-                if f and not d_rz[-1] == 1.5:
+            if i > 100:
+                if f and not d_x[-1] - d_x[-2] > 0.5:
                     desired_start = i
                     print('start', desired_start)
                     f = False
                     f_ = True
-            if f_ and d_t[-1] > d_t[desired_start - 2] + 15:
+            if f_ and d_t[-1] - 30 > d_t[desired_start - 2]:
                 desired_end = i
                 print('end', desired_end)
                 f_ = False
@@ -89,10 +89,10 @@ with open(log[n - 1] + '/_slash_vicon_slash_ARDroneCarre_slash_ARDroneCarre.csv'
             y.append(float(row[11]))
             z.append(float(row[12]))
             t.append(float(row[0]) / 1000000000)
-            if t[-1] > d_t[desired_start] and f:
+            if t[-1] - 10 > d_t[desired_start] and f:
                 f = False
                 vicon_start = j
-            if t[-1] > d_t[desired_start] + 30 and f_:
+            if t[-1] > d_t[desired_start] + 35 and f_:
                 f_ = False
                 vicon_end = j
 
@@ -133,7 +133,7 @@ if n > 3:  # the first three log doesn't include /cmd_vel_RHC
         print('Number of cmd msg received:', k)
 
 plt.figure()
-plt.plot(d_x[desired_start:desired_end], d_y[desired_start:desired_end])
+plt.plot(d_x[44000:desired_end], d_y[44000:desired_end])
 plt.plot(x[vicon_start:vicon_end], y[vicon_start:vicon_end])
 plt.gca().set_aspect('equal', adjustable='box')
 plt.xlim([-1.25, 1.25])
