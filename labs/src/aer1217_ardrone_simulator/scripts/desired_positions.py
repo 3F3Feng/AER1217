@@ -11,6 +11,7 @@ import numpy as np
 
 from geometry_msgs.msg import TransformStamped
 from std_msgs.msg import Int16
+from tf.transformations import quaternion_from_euler
 
 
 # Import class that computes the desired positions
@@ -109,7 +110,11 @@ class ROSDesiredPositionGenerator(object):
         msg.transform.translation.x = x[i]
         msg.transform.translation.y = y[i]
         msg.transform.translation.z = z[i]
-        msg.transform.rotation.z = yaw[i]
+        quat = quaternion_from_euler(0, 0, yaw[i])
+        msg.transform.rotation.x = quat[0]
+        msg.transform.rotation.y = quat[1]
+        msg.transform.rotation.z = quat[2]
+        msg.transform.rotation.w = quat[3]
         self.pub_des_pos.publish(msg)
         # print("i: ", i, "   msg: ", msg)
 
@@ -160,7 +165,11 @@ if __name__ == '__main__':
                 msg.transform.translation.x = 0
                 msg.transform.translation.y = 0
                 msg.transform.translation.z = 1.5
-                msg.transform.rotation.z = 0
+                quat = quaternion_from_euler(0, 0, 0)
+                [msg.transform.rotation.x,
+                 msg.transform.rotation.y,
+                 msg.transform.rotation.z,
+                 msg.transform.rotation.w] = quat
                 DesPosGen.pub_des_pos.publish(msg)
         except KeyboardInterrupt:
             DesPosGen.set_des_pos(i, x, y, z, yaw)

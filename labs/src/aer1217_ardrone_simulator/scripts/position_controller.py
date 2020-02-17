@@ -35,11 +35,11 @@ def main():
                     i += 1
                     (roll, pitch, z_dot, yaw_dot, dt) = p_control.get_cmd_vel()
 
-                    if i % 10 == 0:
+                    # if i % 10 == 0:
                         # os.system('clear')
-                        print('Position:', '\n', p_control.x, '\n', p_control.y, '\n', p_control.z, '\n',
-                              'Target_Position:', '\n', p_control.desired_x, '\n', p_control.desired_y, '\n', p_control.desired_z, '\n',
-                              'Command:', '\n', roll, '\n', pitch, '\n', z_dot, '\n', yaw_dot)
+                        # print('Position:', '\n', p_control.x, '\n', p_control.y, '\n', p_control.z, '\n',
+                        #       'Target_Position:', '\n', p_control.desired_x, '\n', p_control.desired_y, '\n', p_control.desired_z, '\n',
+                        #       'Command:', '\n', roll, '\n', pitch, '\n', z_dot, '\n', yaw_dot)
                     p_control.send_cmd(roll, pitch, z_dot, yaw_dot)
                     if p_control.controller_msg.data == 0:
                         break
@@ -228,9 +228,15 @@ class PositionController(object):
             self.desired_x, self.desired_y, self.desired_z, self.desired_yaw)
 
         # update desired position data
-        (self.desired_x, self.desired_y, self.desired_z, self.desired_yaw) = (
+        (self.desired_x, self.desired_y, self.desired_z) = (
             self._dp_msg.transform.translation.x, self._dp_msg.transform.translation.y,
-            self._dp_msg.transform.translation.z, self._dp_msg.transform.rotation.z)
+            self._dp_msg.transform.translation.z)
+        quat = [self._dp_msg.transform.rotation.x,
+                self._dp_msg.transform.rotation.y,
+                self._dp_msg.transform.rotation.z,
+                self._dp_msg.transform.rotation.w]
+        euler = euler_from_quaternion(quat)
+        self.desired_yaw = euler[2]
         # print("x,y,z_des: ",self.desired_x, self.desired_y, self.desired_z)
 
         # if r=0, ignore desired position data and just hover
