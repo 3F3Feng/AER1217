@@ -14,10 +14,9 @@
   <node name="lab_interface" pkg="aer1217_ardrone_simulator"
         type="indoor_robotics_lab_interface.py" output="screen" required="True"/>
 
-  <!-- TODO: Create ROS node that controls the AR Drone (aer1217_roscontroller.py) -->
   <node name="position_controller" pkg="aer1217_ardrone_simulator"
         type="position_controller.py" output="screen" required="True"/>
-  <!-- TODO: Create ROS node that publishes quadrotor desired positions (desired_positions.py) -->
+
   <node name="desired_positions" pkg="aer1217_ardrone_simulator"
         type="desired_positions.py" output="screen" required="True"/>
   <node name="ardrone_keyboard_controller" pkg="aer1217_ardrone_simulator"
